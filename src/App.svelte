@@ -1,5 +1,6 @@
 <script>
   import { Router, Route } from "svelte-navigator";
+
   import Favorites from "./routes/Favorites.svelte";
   import MealDetail from "./routes/MealDetail.svelte";
   import Meals from "./routes/Meals.svelte";

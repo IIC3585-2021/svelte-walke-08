@@ -1,10 +1,10 @@
 <script>
-  import { Link, link } from "svelte-navigator";
+  import { link } from "svelte-navigator";
 </script>
 
 <nav>
   <a href="/" use:link class="link">Go to Meals</a>
-  <a href="favorites" use:link class="link">Go to Favorites</a>
+  <a href="/favorites" use:link class="link">Go to Favorites</a>
 </nav>
 
 <style>
