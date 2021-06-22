@@ -1,7 +1,13 @@
 <script>
   import { get } from "svelte/store";
-  import { currentMeal, favorites } from "../stores.js";
+  import { currentMeal, favorites, comentarios } from "../stores.js";
+  import { useNavigate } from "svelte-navigator";
+  import Comment from "../components/Comment.svelte"
+  import Form from "../components/Form.svelte"
+  import {onMount} from "svelte"
   export let id;
+
+  const navigate = useNavigate();
   let meal = get(currentMeal);
   let favoritesRecipes = get(favorites);
   let isFavorite = favoritesRecipes.some(
@@ -13,6 +19,20 @@
       (recipe) => recipe.recipe.label.replace(/ /g, "") === id
     );
   });
+
+  onMount(async () => {
+    const res = await fetch("http://localhost:3000/comments");
+    const data = await res.json();
+    comentarios.set(data.filter(d => d.mealID === id))
+    return () => {
+      comentarios.set([])
+    }
+  })
+
+  let mealComments = [];
+  comentarios.subscribe(value => {
+    mealComments = value;
+  })
 </script>
 
 {#if !meal}
@@ -23,11 +43,10 @@
   <div class="main2-container">
     <div class="agarrando">
       <div class="otra">
-        <i class="fa fa-arrow-left back" />
+        <i class="fa fa-arrow-left back" on:click={() => navigate(-1)}/>
       </div>
       <h1 class="center inline">{meal.recipe.label}</h1>
       <div class="estrellas">
-        <p>{isFavorite}</p>
         {#if isFavorite}
           <i
             class="fa fa-star clase"
@@ -70,12 +89,23 @@
         {#each meal.recipe.mealType as label}
           <div class="label label2">{label}</div>
         {/each}
-        <h2>Calories: {meal.recipe.calories}</h2>
+        <h2>Calories: {meal.recipe.calories.toFixed(2)}</h2>
       </div>
     </div>
     <h2 class="center">
       <a href={meal.recipe.url} target="_blank">Recipe here</a>
     </h2>
+    <h2 class="center">Comments</h2>
+    <section>
+      <div class="comentarios">
+        {#each mealComments as comment}
+          <Comment username={comment.username} date={comment.date} comment={comment.comment} />
+        {/each}
+      </div>
+      <div class="formulario">
+        <Form />
+      </div>
+    </section>
   </div>
 {/if}
 
@@ -102,9 +132,10 @@
   .estrellas {
     flex: 1;
     text-align: right;
+    margin: 15px;
   }
   .clase {
-    font-size: 250%;
+    font-size: 350%;
     color: gold;
     cursor: pointer;
   }
@@ -144,5 +175,21 @@
   }
   .label2 {
     background-color: rgb(247, 0, 255);
+  }
+
+  .comentarios {
+    padding: 10px 40px;
+    flex: 3;
+    padding-top: 0;
+  }
+
+  section {
+    display: flex;
+    padding-bottom: 15px;
+  }
+
+  .formulario {
+    flex: 1;
+    margin-right: 40px;
   }
 </style>

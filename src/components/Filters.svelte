@@ -1,7 +1,7 @@
 <script>
   import {selMeal, selDiet, maximo, minimo} from '../stores.js'
-  let diets =  [{id: 0, name: "balanced"}, {id: 1, name: "high-protein"}, {id: 2, name:"high-fiber"},
-                  {id: 3, name:"low-fat"}, {id: 4, name:"low_carb"},{id: 5, name:"low_sodium"}]
+  let diets =  [{id: 0, name: "balanced"}, {id: 1, name: "high_protein"}, {id: 2, name:"high_fiber"},
+                  {id: 3, name:"low_fat"}, {id: 4, name:"low_carb"},{id: 5, name:"low_sodium"}]
   let mealType = [{id: 0, name:"lunch"}, {id: 2, name:"dinner"}, {id: 3, name:"breakfast"},{id: 3, name:"snack"}]
   let min = 500
   let max = 5000

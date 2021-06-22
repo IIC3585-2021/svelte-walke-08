@@ -4,6 +4,8 @@
   import { useNavigate } from "svelte-navigator";
   import { currentMeal, selMeal, selDiet, minimo, maximo } from "../stores.js";
   import Loader from "../components/Loader.svelte";
+  import {get} from "svelte/store"
+  import Form from "../components/Form.svelte";
 
   const navigate = useNavigate();
 
@@ -44,8 +46,8 @@
       filteredMeals = filteredMeals.filter(meal => {
         for (const diet of selectedDiet){
           console.log("sdfasdf:", meal.recipe.dietLabels[0])
-          console.log("name: ", diet.name)
-          if (meal.recipe.dietLabels[0] && diet.name === meal.recipe.dietLabels[0].replace("-","_").toLowerCase()){
+          console.log("name: ", diet)
+          if (meal.recipe.dietLabels[0] && diet === meal.recipe.dietLabels[0].replace("-","_").toLowerCase()){
             return true;
           }
         }
@@ -54,7 +56,11 @@
     filteredMeals = filteredMeals.filter(meal => meal.recipe.calories >= min && meal.recipe.calories <= max);
   }
 
-  let selectedMeal, selectedDiet, min, max;
+  let selectedMeal = get(selMeal)
+  let selectedDiet = get(selDiet)
+  let min = get(minimo)
+  let max = get(maximo)
+
   selMeal.subscribe(value => {
     selectedMeal = value;
     filtrando();
