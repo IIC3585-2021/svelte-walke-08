@@ -2,7 +2,7 @@
   import Card from "../components/Card.svelte";
   import Filters from "../components/Filters.svelte";
   import { useNavigate } from "svelte-navigator";
-  import { currentMeal } from "../stores.js";
+  import { currentMeal, selMeal, selDiet, minimo, maximo } from "../stores.js";
   import Loader from "../components/Loader.svelte";
 
   const navigate = useNavigate();
@@ -10,6 +10,8 @@
   let isSearching = false;
   let input = "";
   let promise = Promise.resolve([]);
+  let filteredMeals = [];
+  let nofilteredMeals = [];
 
   const searchHandler = async () => {
     const response = await fetch(
@@ -17,8 +19,59 @@
     );
     const res = await response.json();
     console.log(res.hits);
+    filteredMeals = res.hits;
+    nofilteredMeals = res.hits;
     return res.hits;
   };
+
+  function filtrando(){
+    if (selectedMeal.length > 0){
+      console.log(filteredMeals)
+      filteredMeals = nofilteredMeals.filter(meal => {
+        for (const type of selectedMeal){
+          if (meal.recipe.mealType && meal.recipe.mealType[0].toLowerCase().includes(type.toLowerCase())){
+            console.log("type: ", type)
+            console.log("fdsafa: ", meal.recipe.mealType[0])
+            return true;
+          }
+        }
+      })
+
+    } else {
+      filteredMeals = nofilteredMeals;
+    }
+    if (selectedDiet.length > 0){
+      filteredMeals = filteredMeals.filter(meal => {
+        for (const diet of selectedDiet){
+          console.log("sdfasdf:", meal.recipe.dietLabels[0])
+          console.log("name: ", diet.name)
+          if (meal.recipe.dietLabels[0] && diet.name === meal.recipe.dietLabels[0].replace("-","_").toLowerCase()){
+            return true;
+          }
+        }
+      })
+    }
+    filteredMeals = filteredMeals.filter(meal => meal.recipe.calories >= min && meal.recipe.calories <= max);
+  }
+
+  let selectedMeal, selectedDiet, min, max;
+  selMeal.subscribe(value => {
+    selectedMeal = value;
+    filtrando();
+  })
+  selDiet.subscribe(value => {
+    selectedDiet = value;
+    filtrando();
+  })
+  minimo.subscribe(value => {
+    min = value;
+    filtrando();
+  })
+  maximo.subscribe(value => {
+    max = value;
+    filtrando()
+  })
+
 </script>
 
 <div class="container main-container">
@@ -66,7 +119,7 @@
         <Loader />
       {:then data}
         <div class="centrando">
-          {#each data as meal}
+          {#each filteredMeals as meal}
             <Card
               onClick={() => {
                 console.log(meal.recipe.label);
