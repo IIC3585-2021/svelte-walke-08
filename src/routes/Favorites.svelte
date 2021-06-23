@@ -16,7 +16,6 @@
     {#each favoritesMeals as meal}
       <Card
         onClick={() => {
-          console.log(meal.recipe.label);
           currentMeal.set(meal);
           navigate(`/meals/${meal.recipe.label.replace(/ /g, "")}`);
         }}

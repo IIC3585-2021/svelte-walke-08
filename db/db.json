@@ -6,6 +6,13 @@
       "date": "Tuesday, June 22, 2021",
       "mealID": "ChickenPaprikash",
       "id": 1
+    },
+    {
+      "username": "Juan",
+      "comment": "Very good! :)",
+      "date": "Wednesday, June 23, 2021",
+      "mealID": "CatalanChicken",
+      "id": 2
     }
   ]
 }

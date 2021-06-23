@@ -5,7 +5,6 @@
   import { currentMeal, selMeal, selDiet, minimo, maximo } from "../stores.js";
   import Loader from "../components/Loader.svelte";
   import {get} from "svelte/store"
-  import Form from "../components/Form.svelte";
 
   const navigate = useNavigate();
 
@@ -28,12 +27,9 @@
 
   function filtrando(){
     if (selectedMeal.length > 0){
-      console.log(filteredMeals)
       filteredMeals = nofilteredMeals.filter(meal => {
         for (const type of selectedMeal){
           if (meal.recipe.mealType && meal.recipe.mealType[0].toLowerCase().includes(type.toLowerCase())){
-            console.log("type: ", type)
-            console.log("fdsafa: ", meal.recipe.mealType[0])
             return true;
           }
         }
@@ -45,8 +41,6 @@
     if (selectedDiet.length > 0){
       filteredMeals = filteredMeals.filter(meal => {
         for (const diet of selectedDiet){
-          console.log("sdfasdf:", meal.recipe.dietLabels[0])
-          console.log("name: ", diet)
           if (meal.recipe.dietLabels[0] && diet === meal.recipe.dietLabels[0].replace("-","_").toLowerCase()){
             return true;
           }
@@ -148,7 +142,7 @@
     display: flex;
   }
   .no-main-container {
-    flex: 5;
+    flex: 4;
   }
   .filter {
     flex: 1;

@@ -35,13 +35,13 @@
 
           <h3 class="mt-2">Calories</h3>
           <div class="form-check">
-              <div>Minimum
-                 <input type="range" min="0" max="5000" step="50" bind:value={min}>
+              <div class="range">Minimum
+                 <input class="rango" type="range" min="0" max="5000" step="50" bind:value={min}>
                  <span>{min}</span>
               </div>
-              <div>
+              <div class="range">
                  Maximum
-                 <input type="range" min="0" max="5000" step="50" bind:value={max}> 
+                 <input class="rango" type="range" min="0" max="5000" step="50" bind:value={max}> 
                  <span>{max}</span>
               </div>  
           </div>
@@ -61,6 +61,13 @@
 </div>
 
 <style>
+.range {
+  display: flex;
+  align-items: center;
+}
+.rango {
+  margin: 0;
+}
 .container {
     text-align: left;
     margin-left: 10px;
